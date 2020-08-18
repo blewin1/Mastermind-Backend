@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::API
-    def authenticate_token                                                        
+    def authenticate_token 
         render json: { status: 401, message: 'Unauthorized' } unless decode_token(bearer_token)
       end 
 
@@ -16,9 +16,9 @@ class ApplicationController < ActionController::API
       end
 
       def get_current_user                                                           
-        return if !bearer_token                                                      
-        decoded_jwt = decode_token(bearer_token)                                     
-        User.find(decoded_jwt[0]["user"]["id"])                                                     
+        return if !bearer_token
+        decoded_jwt = decode_token(bearer_token)
+        User.find(decoded_jwt[0]["user"]["id"])
       end 
 
       def authorize_user                                                             

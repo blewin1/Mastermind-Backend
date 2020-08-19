@@ -66,7 +66,7 @@ class UsersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      params.require(:user).permit(:email, :password, :firstname)
+      params.require(:user).permit(:email, :password, :firstname, :game_data)
     end
     ## create appropriate payload for javascript web token
     def payload(id, email)

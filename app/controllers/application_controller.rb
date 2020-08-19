@@ -17,11 +17,14 @@ class ApplicationController < ActionController::API
 
       def get_current_user                                                           
         return if !bearer_token
+        puts 'BEARER TOKEN THEN DECODED JWT'
+        puts bearer_token
         decoded_jwt = decode_token(bearer_token)
+        puts decoded_jwt
         User.find(decoded_jwt[0]["user"]["id"])
       end 
 
-      def authorize_user                                                             
+      def authorize_user
         render json: { status: 401, message: "Unauthorized" } unless get_current_user.id == params[:id].to_i                                                         
       end
 end

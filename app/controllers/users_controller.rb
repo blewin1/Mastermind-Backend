@@ -8,7 +8,7 @@ class UsersController < ApplicationController
     user = User.find_by(email: params[:user][:email])
     if user && user.authenticate(params[:user][:password])
       token = create_token(user.id, user.email)
-      render json: {status: 200, token: token, user: user}
+      render json: {status: 200, token: token, user: user.to_json(include: :game_stats)}
     else
       render json: {status: 401, message: "Unauthorized"}
     end
@@ -16,7 +16,7 @@ class UsersController < ApplicationController
   
   # GET /users/auto_login
   def auto_login
-    render json: {user: get_current_user, status: 200}
+    render json: {user: get_current_user.to_json(include: :game_stats), status: 200}
   end
 
   # GET /users
@@ -47,7 +47,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   def update
     if @user.update(user_params)
-      render json: {user: @user, status: 200}
+      render json: {user: @user.to_json(include: :game_stats), status: 200}
     else
       render json: @user.errors, status: :unprocessable_entity
     end
@@ -66,7 +66,7 @@ class UsersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      params.require(:user).permit(:email, :password, :firstname, :game_data)
+      params.require(:user).permit(:email, :password, :firstname, :game_data, :game_type)
     end
     ## create appropriate payload for javascript web token
     def payload(id, email)

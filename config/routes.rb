@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :game_stats
   root 'welcome#index'
   resources :users do                                                            
     collection do                                                                
